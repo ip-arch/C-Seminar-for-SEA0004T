@@ -1,0 +1,40 @@
+name: release
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+env:
+  AVRDUDE_VERSION: v8.3
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Stage sources
+        run: |
+          mkdir -p dist/SEA0004T_Seminar
+          git archive HEAD | tar -x -C dist/SEA0004T_Seminar
+
+      - name: Add avrdude
+        run: |
+          curl -fL -o avrdude.zip \
+		"https://github.com/avrdudes/avrdude/releases/download/${AVRDUDE_VERSION}/avrdude-${AVRDUDE_VERSION}-windows_mingw-ucrt-x64.zip"
+          mkdir -p dist/SEA0004T_Seminar/tools/avrdude
+          unzip -j avrdude.zip avrdude.exe avrdude.conf \
+            -d dist/SEA0004T_Seminar/tools/avrdude
+
+      - name: Zip
+        run: |
+          cd dist
+          zip -r "SEA0004T_Seminar-${GITHUB_REF_NAME}.zip" SEA0004T_Seminar
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/*.zip --generate-notes

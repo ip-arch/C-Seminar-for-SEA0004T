@@ -9,7 +9,8 @@ find_program(AVR_SIZE    NAMES avr-size    HINTS "${AVR_ROOT}/bin" NO_DEFAULT_PA
 # tools/avrdude に同梱した avrdude を優先し、無ければ PATH から探す
 find_program(AVRDUDE NAMES avrdude HINTS "${CMAKE_SOURCE_DIR}/tools/avrdude")
 if(AVRDUDE)
-  if(EXISTS "${CMAKE_SOURCE_DIR}/tools/avrdude/avrdude.conf")
+  if(AVRDUDE MATCHES "/tools/avrdude/"
+	  AND EXISTS "${CMAKE_SOURCE_DIR}/tools/avrdude/avrdude.conf")
     set(AVRDUDE_CONF -C "${CMAKE_SOURCE_DIR}/tools/avrdude/avrdude.conf")
   endif()
 else()

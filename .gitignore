@@ -1,0 +1,16 @@
+# Visual Studio / CMake の出力
+out/
+build/
+.vs/
+CMakeUserPresets.json
+
+# avrdude（Release 作成時に自動で追加するのでコミットしない）
+tools/avrdude/*
+!tools/avrdude/README.txt
+
+# ビルド生成物
+*.hex
+*.elf
+*.o
+*.d
+*.map

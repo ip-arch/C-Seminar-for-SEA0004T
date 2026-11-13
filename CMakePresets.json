@@ -1,0 +1,48 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "avr",
+      "displayName": "SEA0004T (ATmega328P)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "toolchainFile": "${sourceDir}/cmake/avr-gcc.cmake",
+      "cacheVariables": {
+        "AVR_ROOT": "C:/avr8-gnu-toolchain-win32_x86_64",
+        "AVR_PORT": "ch340",
+        "AVR_BAUD": "115200",
+        "CMAKE_BUILD_TYPE": "Release",
+        "SEA_TARGET": "avr"
+      }
+    },
+    {
+      "name": "pc",
+      "displayName": "PC (Windows, MSVC)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "SEA_TARGET": "pc",
+        "CMAKE_C_COMPILER": "cl.exe",
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "avr",
+      "configurePreset": "avr"
+    },
+    {
+      "name": "pc",
+      "configurePreset": "pc"
+    }
+  ]
+}

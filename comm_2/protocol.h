@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-﻿/* protocol.h -- PC とボードで共通の「約束」
+/* protocol.h -- PC とボードで共通の「約束」
  *   やりとりは、改行で終わる 1 行のテキスト。
  *   PC が "GET xxx" と聞くと、ボードが "xxx 数値" と答える */
 #ifndef PROTOCOL_H

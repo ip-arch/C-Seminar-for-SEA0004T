@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-﻿/* protocol.h -- PC とボードで共通の「約束」
+/* protocol.h -- PC とボードで共通の「約束」
  *   どちらのプログラムもこのファイルを読むので、命令の文字列が食い違わない。
  *   やりとりは、改行で終わる 1 行のテキスト。 */
 #ifndef PROTOCOL_H

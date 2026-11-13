@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-﻿/* comm_1 (PC 側): ボードの LED を、PC から 3 回点滅させる */
+/* comm_1 (PC 側): ボードの LED を、PC から 3 回点滅させる */
 
 #include <stdio.h>
 #include "uart_helper.h"

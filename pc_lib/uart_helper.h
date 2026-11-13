@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-﻿/* uart_helper.h -- PC (Windows) 側で、USB シリアル機器と通信するための共用ライブラリ
+/* uart_helper.h -- PC (Windows) 側で、USB シリアル機器と通信するための共用ライブラリ
  *
  *   使い方:
  *     UartStream uart;

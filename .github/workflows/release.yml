@@ -23,7 +23,7 @@ jobs:
       - name: Add avrdude
         run: |
           curl -fL -o avrdude.zip \
-		"https://github.com/avrdudes/avrdude/releases/download/${AVRDUDE_VERSION}/avrdude-${AVRDUDE_VERSION}-windows_mingw-ucrt-x64.zip"
+             "https://github.com/avrdudes/avrdude/releases/download/${AVRDUDE_VERSION}/avrdude-${AVRDUDE_VERSION}-windows_mingw-ucrt-x64.zip"
           mkdir -p dist/SEA0004T_Seminar/tools/avrdude
           unzip -j avrdude.zip avrdude.exe avrdude.conf \
             -d dist/SEA0004T_Seminar/tools/avrdude

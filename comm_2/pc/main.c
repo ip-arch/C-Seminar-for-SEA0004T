@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-﻿/* comm_2 (PC 側): ボードの可変抵抗の値を、0.5 秒ごとに 10 回読んで表示する */
+/* comm_2 (PC 側): ボードの可変抵抗の値を、0.5 秒ごとに 10 回読んで表示する */
 
 #include <stdio.h>
 #include "uart_helper.h"

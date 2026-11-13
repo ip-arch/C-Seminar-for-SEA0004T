@@ -1,19 +1,20 @@
-# SEA0004T-Seminar (テンプレート)
+# SEA0004T_Seminar (テンプレート)
 
 Visual Studio + Microchip AVR 8-bit Toolchain (avr-gcc) で、Elecrow SEA0004T (ATmega328P) を C 言語で開発するためのテンプレートです。
 Elecrow 公式の 21 レッスン (Arduino 用サンプル) を、Arduino のライブラリを使わない C 言語に書き直してあります。
 
 ## 使い方 (HEX を作るところまで)
 
-1. Microchip AVR 8-bit Toolchain を `C:\avr8-gnu-toolchain-win32_x86_64` に展開する
+1. 下記リンクのMicrochip AVR 8-bit Toolchain(Windows) を `C:\avr8-gnu-toolchain-win32_x86_64` に展開する
    (別の場所に置いた場合は `CMakePresets.json` の `AVR_ROOT` を書き換える)
+   https://www.microchip.com/en-us/tools-resources/develop/microchip-studio/gcc-compilers
 2. Visual Studio で「フォルダーを開く」→ このフォルダーを選ぶ
 3. 構成が `SEA0004T (ATmega328P)` になっていることを確認する
 4. `lesson_0` をビルドする → `out\build\avr\lesson_0\lesson_0.hex` ができれば成功
 
 ## ボードへの書き込み
 
-1. `tools\avrdude\` に `avrdude.exe` と `avrdude.conf` を置く
+1. `tools\avrdude\` に `avrdude.exe` と `avrdude.conf` を置く(ReleaseのZIPには導入済み)
 2. `CMakePresets.json` の `AVR_PORT` は、既定で `ch340` (デバイス名で探す) になっている。
    この指定で見つからないときは、デバイスマネージャーで確認した COM ポート (例: `COM5`) に書き換える
    (デバイス名での指定は、avrdude の mingw 版で動作を確認。`-P ?s` で一覧を表示できる版もある)

@@ -1,6 +1,6 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-﻿#include "uart_helper.h"
+#include "uart_helper.h"
 #include <windows.h>
 #include <setupapi.h>
 #include <io.h>

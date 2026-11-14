@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-/* lesson_9: 水やりのお知らせ (Elecrow L_9 Plant_Watering_Reminder_System)
+/* lesson_09: 水やりのお知らせ (Elecrow L_9 Plant_Watering_Reminder_System)
  *   土壌水分が少ないほど、LED とブザーで知らせる */
 
 #include <stdio.h>

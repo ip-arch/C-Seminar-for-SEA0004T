@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-/* lesson_5: 土壌水分センサの値を表示する (Elecrow L_5 Moisture_Monitor) */
+/* lesson_05: 土壌水分センサの値を表示する (Elecrow L_5 Moisture_Monitor) */
 
 #include <stdio.h>
 #include "sea0004t.h"

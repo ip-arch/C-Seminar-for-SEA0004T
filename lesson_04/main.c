@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-/* lesson_4: LCD に文字を表示する (Elecrow L_4 LCD_display) */
+/* lesson_04: LCD に文字を表示する (Elecrow L_4 LCD_display) */
 
 #include <stdio.h>
 #include "sea_time.h"

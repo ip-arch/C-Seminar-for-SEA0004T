@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-/* lesson_6: 暗くなったら LED を点ける街灯 (Elecrow L_6 Intelligent_street_light) */
+/* lesson_06: 暗くなったら LED を点ける街灯 (Elecrow L_6 Intelligent_street_light) */
 
 #include <stdio.h>
 #include "sea0004t.h"

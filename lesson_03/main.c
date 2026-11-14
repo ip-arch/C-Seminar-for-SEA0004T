@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-/* lesson_3: 可変抵抗で LED の明るさを変える (Elecrow L_3 Breathing_LED) */
+/* lesson_03: 可変抵抗で LED の明るさを変える (Elecrow L_3 Breathing_LED) */
 
 #include <stdio.h>
 #include "sea0004t.h"

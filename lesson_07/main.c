@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
-/* lesson_8: 障害物が近づいたらリレーと LED を動かす (Elecrow L_8 Obstacle_close_range_alarm) */
+/* lesson_07: 超音波センサで距離を測って表示する (Elecrow L_7 Ultrasonic_ranging_display) */
 
 #include <stdio.h>
-#include "sea0004t.h"
 #include "sea_time.h"
 #include "sea_uart.h"
 #include "sea_i2c.h"
@@ -12,6 +11,7 @@
 
 int main(void)
 {
+    char buf[8];
     uint32_t previous = 0;
 
     uart_init();
@@ -23,32 +23,23 @@ int main(void)
     }
     puts("Backpack init'd.");
     hcsr04_init();
-    sea_relay_init();
-    sea_led_init();
 
-    lcd_print_lines("Distance    30", "");
+    lcd_print_lines("Distance:", "");
 
     for (;;) {
         int16_t distance = hcsr04_cm();
         if (distance < 0) {
-            continue;
+            continue;                         /* 測れなかったのでやり直し */
         }
 
+        /* 500ms ごとに表示を更新 */
         uint32_t now = time_millis();
         if (now - previous >= 500) {
             previous = now;
-
-            if (distance >= 30) {                 /* 30cm 以上: 遠い */
-                lcd_print_at(9, 0, ">=");
-                sea_relay_write(0);
-                sea_led_off();
-            } else {                              /* 30cm 未満: 近い */
-                lcd_print_at(9, 0, "< ");
-                sea_relay_write(1);
-                sea_led_on();
-            }
-            printf("%d\n", distance);
+            snprintf(buf, sizeof buf, "%d", distance);
+            lcd_print_at(0, 1, "   ");
+            lcd_print_at(0, 1, buf);
         }
-        delay_ms(100);
+        delay_ms(10);
     }
 }

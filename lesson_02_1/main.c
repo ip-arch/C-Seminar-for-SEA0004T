@@ -6,7 +6,7 @@
 #include "sea_time.h"
 #define DEBOUNCE 10
 
-uint8_t key_value(void);
+static uint8_t key_value(void);
 
 int main(void)
 {
@@ -25,7 +25,7 @@ int main(void)
     }
 }
 
-uint8_t key_value(void) {
+static uint8_t key_value(void) {
     uint8_t prev, cur = sea_button_pressed();
     do {
         prev = cur;

@@ -14,7 +14,7 @@ int main(void)
     uart_init();
     adc_init();
     pwm_init();
-    puts("Breathing LED start");
+    puts("start LOOP");
 
     for (;;) {
         uint16_t adc = adc_read(ADC_POT);                    /* 0〜1023 */

@@ -1,6 +1,0 @@
-if(MSVC)
-  target_link_options(あなたのターゲット名 PRIVATE
-    "/SUBSYSTEM:WINDOWS"
-    "/ENTRY:mainCRTStartup"
-  )
-endif()

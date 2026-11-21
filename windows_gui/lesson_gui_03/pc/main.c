@@ -21,6 +21,6 @@ void on_button_click(void)
 
 int main(void)
 {
-    run_gui_app(INPUTBOX,"イベント駆動サンプル", "クリック","表示");
+    run_gui_app(INPUTBOX,"イベント駆動サンプル", "クリック","表示",NULL,0);
     return 0;
 }

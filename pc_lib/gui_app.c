@@ -1,3 +1,7 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2026 Naohiko Shimizu <nshimizu@ip-arch.jp>
+
+
 #include "gui_app.h"
 
 #include <stdlib.h>
@@ -7,10 +11,12 @@
 #define IDC_MAIN_LABEL  2001
 #define IDC_MAIN_EDIT   2002
 #define IDC_MAIN_BUTTON 2003
+#define IDC_MAIN_COMBO  2004
 #define IDT_MAIN_TIMER  3001
 
 static HWND g_hwnd_main = NULL;
 static HWND g_hwnd_edit = NULL;
+static HWND g_hwnd_combo = NULL;
 static HFONT g_hfont_main = NULL;
 static UINT_PTR g_timer_id = 0;
 
@@ -135,11 +141,98 @@ void set_gui_timer(unsigned int interval_ms)
     }
 }
 
+void set_select_items(const char* const* items, int count)
+{
+    int i;
+    if (g_hwnd_combo == NULL || items == NULL || count <= 0) {
+        return;
+    }
+
+    SendMessageW(g_hwnd_combo, CB_RESETCONTENT, 0, 0);
+
+    for (i = 0; i < count; i++) {
+        wchar_t* wstr = utf8_to_wide_alloc(items[i] ? items[i] : "");
+        if (wstr != NULL) {
+            SendMessageW(g_hwnd_combo, CB_ADDSTRING, 0, (LPARAM)wstr);
+            free(wstr);
+        }
+    }
+
+    SendMessageW(g_hwnd_combo, CB_SETCURSEL, 0, 0);
+}
+
+int get_select_index(void)
+{
+    LRESULT idx;
+    if (g_hwnd_combo == NULL) {
+        return -1;
+    }
+    idx = SendMessageW(g_hwnd_combo, CB_GETCURSEL, 0, 0);
+    return (idx == CB_ERR) ? -1 : (int)idx;
+}
+
+void get_select_text(char* buf, size_t buf_size)
+{
+    LRESULT idx;
+    LRESULT len_w;
+    wchar_t* wbuf;
+
+    if (buf == NULL || buf_size == 0) {
+        return;
+    }
+    buf[0] = '\0';
+
+    if (g_hwnd_combo == NULL) {
+        return;
+    }
+
+    idx = SendMessageW(g_hwnd_combo, CB_GETCURSEL, 0, 0);
+    if (idx == CB_ERR) {
+        return;
+    }
+
+    len_w = SendMessageW(g_hwnd_combo, CB_GETLBTEXTLEN, (WPARAM)idx, 0);
+    if (len_w == CB_ERR || len_w < 0) {
+        return;
+    }
+
+    wbuf = (wchar_t*)calloc((size_t)len_w + 1, sizeof(wchar_t));
+    if (wbuf == NULL) {
+        return;
+    }
+
+    SendMessageW(g_hwnd_combo, CB_GETLBTEXT, (WPARAM)idx, (LPARAM)wbuf);
+    wide_to_utf8_copy(wbuf, buf, buf_size);
+    free(wbuf);
+}
+
 typedef struct {
     int flag;
     const wchar_t* label_w;
     const wchar_t* button_w;
+    const char* const* items;
+    int item_count;
 } app_create_param_t;
+
+static void populate_combo_items(HWND hcombo, const char* const* items, int count)
+{
+    int i;
+    if (hcombo == NULL || items == NULL || count <= 0) {
+        return;
+    }
+
+    SendMessageW(hcombo, CB_RESETCONTENT, 0, 0);
+
+    for (i = 0; i < count; i++) {
+        wchar_t* wstr = utf8_to_wide_alloc(items[i] ? items[i] : "");
+        if (wstr != NULL) {
+            SendMessageW(hcombo, CB_ADDSTRING, 0, (LPARAM)wstr);
+            free(wstr);
+        }
+    }
+
+    SendMessageW(hcombo, CB_SETCURSEL, 0, 0);
+}
 
 static LRESULT CALLBACK main_wnd_proc(
     HWND hwnd,
@@ -153,6 +246,7 @@ static LRESULT CALLBACK main_wnd_proc(
         app_create_param_t* param = (app_create_param_t*)cs->lpCreateParams;
         const wchar_t* label_text = (param && param->label_w) ? param->label_w : L"文字列を入力してください:";
         const wchar_t* btn_text = (param && param->button_w) ? param->button_w : L"表示";
+        int next_y = 44;
         HWND hlabel, hbtn;
 
         g_hwnd_main = hwnd;
@@ -167,7 +261,17 @@ static LRESULT CALLBACK main_wnd_proc(
             20, 16, 340, 24,
             hwnd, (HMENU)(INT_PTR)IDC_MAIN_LABEL, cs->hInstance, NULL);
 
-        if (param->flag & GUI_APP_TEXT_INPUT)
+        if (param && (param->flag & GUI_APP_SELECT_INPUT)) {
+            g_hwnd_combo = CreateWindowExW(
+                0, L"COMBOBOX", L"",
+                WS_CHILD | WS_VISIBLE | WS_TABSTOP | CBS_DROPDOWNLIST | WS_VSCROLL,
+                20, next_y, 340, 140,
+                hwnd, (HMENU)(INT_PTR)IDC_MAIN_COMBO, cs->hInstance, NULL);
+            populate_combo_items(g_hwnd_combo, param->items, param->item_count);
+            next_y += 38;
+        }
+
+        if (param && (param->flag & GUI_APP_TEXT_INPUT))
         g_hwnd_edit = CreateWindowExW(
             WS_EX_CLIENTEDGE, L"EDIT", L"",
             WS_CHILD | WS_VISIBLE | WS_TABSTOP | ES_AUTOHSCROLL,
@@ -187,7 +291,9 @@ static LRESULT CALLBACK main_wnd_proc(
             if (hbtn)       SendMessageW(hbtn, WM_SETFONT, (WPARAM)g_hfont_main, TRUE);
         }
 
-        if (g_hwnd_edit != NULL) {
+        if (g_hwnd_combo != NULL) {
+            SetFocus(g_hwnd_combo);
+        } else if (g_hwnd_edit != NULL) {
             SetFocus(g_hwnd_edit);
         }
         return 0;
@@ -233,7 +339,9 @@ void run_gui_app(
     int flag,
     const char* window_title,
     const char* prompt_label,
-    const char* button_label)
+    const char* button_label,
+    const char* const* items,
+    int item_count)
 {
     static const wchar_t* kClassName = L"SeaEventInputWindowClass";
     static BOOL registered = FALSE;
@@ -271,6 +379,8 @@ void run_gui_app(
     param.flag = flag;
     param.label_w = label_w;
     param.button_w = button_w;
+    param.items = items;
+    param.item_count = item_count;
 
     hwnd = CreateWindowExW(
         0,

@@ -48,7 +48,7 @@ int main(void)
         return 1;
     }
     printf("接続しました\n");
-    run_gui_app(INPUTBOX, "LED制御", "クリック", "表示");
+    run_gui_app(INPUTBOX, "LED制御", "クリック", "表示",NULL,0);
 
     close_uart_stream(&uart);
     return 0;

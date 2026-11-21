@@ -213,9 +213,14 @@ void close_uart_stream(UartStream *u)
     u->in = u->out = NULL;
 }
 
-char *uart_fgets(char *buf, int size, UartStream *u)
+char* uart_fgets(char* buf, int size, UartStream* u)
 {
-    clearerr(u->in);                           /* 前回の時間切れを引きずらない */
+    if (buf == NULL || size <= 0 || u == NULL || u->in == NULL)
+        return NULL;
+
+    buf[0] = '\0';
+
+    clearerr(u->in);
     return fgets(buf, size, u->in);
 }
 
@@ -239,4 +244,23 @@ int uart_wait_line(UartStream *u, const char *expected, unsigned int timeout_ms)
     }
     set_error("待っていた応答が届きませんでした");
     return 0;
+}
+
+int uart_available(UartStream* u)
+{
+    if (u == NULL || u->in == NULL)
+        return 0;
+
+    COMSTAT stat;
+    DWORD errors;
+
+    HANDLE h = (HANDLE)_get_osfhandle(_fileno(u->in));
+
+    if (h == INVALID_HANDLE_VALUE)
+        return 0;
+
+    if (!ClearCommError(h, &errors, &stat))
+        return 0;
+
+    return (int)stat.cbInQue;
 }

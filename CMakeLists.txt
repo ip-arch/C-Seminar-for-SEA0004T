@@ -19,7 +19,12 @@ endif()
 #   comm_*    : PC とボードが通信するレッスン (board/ と pc/ をもつ)
 #   work_*    : 受講生が、上のフォルダをコピーして作る課題
 file(GLOB folders RELATIVE "${CMAKE_SOURCE_DIR}" CONFIGURE_DEPENDS
-     "${CMAKE_SOURCE_DIR}/lesson_*" "${CMAKE_SOURCE_DIR}/comm_*" "${CMAKE_SOURCE_DIR}/work_*")
+     "${CMAKE_SOURCE_DIR}/lesson_*"
+     "${CMAKE_SOURCE_DIR}/work_*"
+     "${CMAKE_SOURCE_DIR}/comm_*"
+     "${CMAKE_SOURCE_DIR}/windows_gui/lesson_gui_*"
+     "${CMAKE_SOURCE_DIR}/windows_gui/lesson_*"
+     "${CMAKE_SOURCE_DIR}/windows_gui/work_*")
 list(SORT folders)
 foreach(dir IN LISTS folders)
   if(NOT IS_DIRECTORY "${CMAKE_SOURCE_DIR}/${dir}")
@@ -29,7 +34,7 @@ foreach(dir IN LISTS folders)
     message(WARNING "${dir}: CMakeLists.txt がありません。フォルダごとコピーしましたか?")
     continue()
   endif()
-  if(NOT dir MATCHES "^[A-Za-z0-9_]+$")
+  if(NOT dir MATCHES "^[A-Za-z0-9_/]+$")
     message(WARNING "フォルダ名 '${dir}' は、半角の英数字と _ だけにしてください。このフォルダは無視します")
     continue()
   endif()

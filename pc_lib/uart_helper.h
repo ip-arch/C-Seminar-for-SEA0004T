@@ -52,4 +52,7 @@ void uart_sleep_ms(unsigned int ms);
 /* コンソールの出力を UTF-8 にする (日本語が文字化けしないように) */
 void console_utf8(void);
 
+/* 入力バッファにデータがあるかどうかを判定 */
+int uart_available(UartStream* u);
+
 #endif

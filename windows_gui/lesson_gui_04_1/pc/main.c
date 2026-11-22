@@ -8,15 +8,13 @@
 #include "uart_helper.h"
 #include "../protocol.h"
 
-#define INPUTBOX GUI_APP_TEXT_INPUT
-/* #define INPUTBOX 0 */
 static UartStream g_uart;   /* ボタンの処理から使うので、関数の外に置く */
 
 void on_button_click(void)
 {
     char buf[256];
     get_input_text(buf, sizeof(buf));
-    fprintf(g_uart.out, "%15s\n", buf);
+    fprintf(g_uart.out, "%16s\n", buf);
     message_box("入力された文字列", buf);
 }
 
@@ -36,6 +34,6 @@ int main(void)
 
 
     
-    run_gui_app(INPUTBOX,"LCD駆動サンプル", "クリック","表示",NULL,0);
+    run_gui_app(  GUI_APP_TEXT_INPUT,"LCD駆動サンプル", "クリック","表示",NULL,0);
     return 0;
 }
